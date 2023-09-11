@@ -41,7 +41,7 @@ function AdminUi() {
     // <------ When Component Mounted this will call and when users and searchText data change will call the filterUsers fn with searchText.  -----> //
     useEffect(() => {
         filterUsers(searchText)
-        console.log("after mounter ", currentPage);
+        
     }, [searchText])
 
     useEffect(() => {

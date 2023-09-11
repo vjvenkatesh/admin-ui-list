@@ -14,7 +14,7 @@ function PaginationBar({ handleDeleteSelected, filteredUsers, setCurrentPage, cu
         setCurrentPage(value);
     }
 
-    console.log("pagination bar ", currentPage);
+    
 
     // Handle pagination
     const itemsPerPage = 10;
