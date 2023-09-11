@@ -1,0 +1,11 @@
+.search-box {
+  width: 100%;
+  height: 2.2rem;
+  padding: 3px;
+  font-size: medium;
+  font-weight: 500;
+}
+
+.search-box:focus {
+  border-color: orange;
+}

@@ -1,0 +1,63 @@
+/* pagination-content */
+.pagination-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+}
+
+.page-section {
+    display: flex;
+
+
+}
+
+.page-btn {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    border-radius: 20px;
+    border: 0.01px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 500;
+}
+
+.page-btn:hover {
+    cursor: pointer;
+}
+
+.page-btn.active {
+    background-color: rgb(209, 209, 209);
+}
+
+/* delete selected button */
+.delete-btn {
+    background-color: rgb(255, 3, 142);
+    border: 1px solid rgb(252, 2, 147);
+    color: rgb(255, 255, 255);
+    width: fit-content;
+    height: 30px;
+    border-radius: 10px;
+
+}
+
+.delete-btn:hover {
+    cursor: pointer;
+    background-color: rgb(238, 83, 168);
+
+}
+
+
+
+
+
+
+
+
+/* for delete selected button on mobile view */
+@media screen and (max-width:760px) {
+    .pagination-row {
+        align-items: center;
+        flex-direction: column-reverse;
+    }
+}
