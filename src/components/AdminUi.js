@@ -44,9 +44,9 @@ function AdminUi() {
         console.log("after mounter ", currentPage);
     }, [searchText])
 
-    useEffect(()=>{
+    useEffect(() => {
         userChangesHandle();
-    },[users])
+    }, [users])
 
 
 
@@ -54,10 +54,10 @@ function AdminUi() {
 
 
     // < ------ handle whenever users data change update filtered data ------ > //
-    const userChangesHandle=()=>{
+    const userChangesHandle = () => {
         setFilteredUsers(users);
     }
-    
+
 
 
     // <------ filter the user data based on the query which user enters in search input ..   --------> //
@@ -163,7 +163,7 @@ function AdminUi() {
 
     //  <------ This function delete all the selected data from the checkbox. -------> //
     const handleDeleteSelected = () => {
-        
+
         const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
         const updatedUsers = users.filter((user) => !selectedRows.includes(user.id));
@@ -180,7 +180,7 @@ function AdminUi() {
 
 
         if (currentPage === totalPages) {
-            setCurrentPage(currentPage-1);
+            setCurrentPage(currentPage - 1);
         }
 
 
@@ -235,8 +235,8 @@ function AdminUi() {
 
 
 
-   
-   
+
+
 
     return (
         <div className='admin-table'>
