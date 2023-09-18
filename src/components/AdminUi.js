@@ -217,8 +217,7 @@ function AdminUi() {
 
     // Handle row data change when in edit mode
     const handleRowDataChange = (event, field, userId) => {
-        console.log(event.target.value);
-        if (event.target.value === '') {
+        if (event.target.value == "" || editedRow.name == "" || editedRow.email== "" || editedRow.role =="") {
         setIsSubmitDisabled(true);
         }
         else{
