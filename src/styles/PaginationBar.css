@@ -57,7 +57,13 @@
 /* for delete selected button on mobile view */
 @media screen and (max-width:760px) {
     .pagination-row {
+        display: flex;
         align-items: center;
         flex-direction: column-reverse;
+        max-width: 90%;
+    }
+    .delete-btn {
+     margin-top: 15px;
+    
     }
 }

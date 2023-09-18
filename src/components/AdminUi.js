@@ -10,6 +10,8 @@ import PaginationBar from './PaginationBar'
 import SearchBar from './SearchBar';
 import { Typography } from '@mui/material';
 
+import ipConfig from '../ipConfig.json';
+
 function AdminUi() {
 
 
@@ -29,6 +31,9 @@ function AdminUi() {
 
     const [selectAll, setSelectAll] = useState(false);
 
+
+    const [editedRow,setEditedRow] =useState({});
+
     const itemsPerPage = 10;
 
     // <------ When Component Mounted this will call the fetchUsersFromApi function. -----> //
@@ -41,7 +46,7 @@ function AdminUi() {
     // <------ When Component Mounted this will call and when users and searchText data change will call the filterUsers fn with searchText.  -----> //
     useEffect(() => {
         filterUsers(searchText)
-        
+
     }, [searchText])
 
     useEffect(() => {
@@ -71,14 +76,15 @@ function AdminUi() {
                 user.role.toLowerCase().includes(query.toLowerCase())
         );
         setCurrentPage(1);
-
-        // setFilteredUsers([...filteredData]);
+        
         setFilteredUsers(filteredData);
 
+        if(filteredData.length<1 && query != ""){
+            alert("No results found");
+        }
+        
+
     };
-
-
-
 
 
 
@@ -117,9 +123,7 @@ function AdminUi() {
 
     const fetchUsersFromAPI = async () => {
         try {
-            const response = await fetch(
-                'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json'
-            );
+            const response = await fetch(ipConfig.API_URL);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
@@ -129,6 +133,7 @@ function AdminUi() {
             setUsers(data);
 
         } catch (error) {
+            alert("Error on fetching data from the backend ! check whether backend server is running or not!....")
             console.error('Error fetching user data:', error);
         }
     };
@@ -179,9 +184,10 @@ function AdminUi() {
         setSelectAll(false);
 
 
-        if (currentPage === totalPages) {
-            setCurrentPage(currentPage - 1);
+        if (currentPage === totalPages && totalPages!= 1 ) {
+            setCurrentPage(currentPage-1);
         }
+        
 
 
         // Update the 'users' and 'filteredUsers' states with the filtered lists
@@ -191,30 +197,54 @@ function AdminUi() {
 
 
 
+
+
+
+    
+
+
+
     // Handle row edit mode toggle
     const toggleEditMode = (userId) => {
         setEditMode(editMode === userId ? null : userId);
+        const editingUser=users.filter((user)=>{
+            if(user.id == userId){
+                return user;
+            }
+        })
+
+        setEditedRow(editingUser[0]);
     };
 
 
 
     // Handle row data change when in edit mode
     const handleRowDataChange = (event, field, userId) => {
-        const updatedUsers = users.map((user) => {
-            if (user.id === userId) {
-                return { ...user, [field]: event.target.value };
-            }
-            return user;
-        });
-        setUsers(updatedUsers);
+        const updatedRow = { ...editedRow, [field]: event.target.value };
+        setEditedRow(updatedRow);
+        console.log("indisw")
     };
 
 
 
 
+    const toggleSaveMode=(userId)=>{
+        setEditMode(editMode === userId ? null : userId);
+        // setUsers(...users, editedRow);
+        const updatedData = users.map((user) => {
+            if (user.id === editedRow.id) {
+              return editedRow;
+            }
+            return user;
+          });
+          
+          console.log(updatedData);
+          setUsers(updatedData);
+          setSearchText("");
+    }
 
 
-
+    
 
 
 
@@ -240,145 +270,153 @@ function AdminUi() {
 
     return (
         <div className='admin-table'>
-
-            {/* search-section */}
-            <div className='search-bar'>
-                <SearchBar setSearchText={setSearchText} searchText={searchText} />
-            </div>
-
-
-            {/* table-section */}
-            <div className='table-section'>
-                <table className="custom-table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input
-                                    type="checkbox"
-                                    checked={selectAll}
-                                    onChange={handleSelectAll}
-                                />
-                            </th>
-                            <th>
-                                <Typography variant='title'>
-                                    Name
-                                </Typography>
-                            </th>
-                            <th>
-                                <Typography variant='title'>
-                                    Email
-                                </Typography></th>
-                            <th><Typography variant='title'>
-                                Role
-                            </Typography></th>
-                            <th>
-                                <Typography variant='title'>
-                                    Actions
-                                </Typography></th>
-                        </tr>
-                    </thead>
-                    {/* Table body */}
-                    <tbody>
-                        {/* Render rows */}
-                        {filteredUsers
-                            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-                            .map((user) => (
-                                <tr
-                                    className="table-row"
-                                    key={user.id}
-                                    style={{
-                                        backgroundColor: selectedRows.includes(user.id)
-                                            ? 'gray'
-                                            : '',
-                                    }}
-                                >
-                                    <td>
+            <div className="grid-container">
+                <div className="grid-item">
+                    {/* search-section */}
+                    <div className='search-bar'>
+                        <SearchBar setSearchText={setSearchText} searchText={searchText} />
+                    </div>
+                </div>
+                <div className="grid-item"> {/* table-section */}
+                    <div className='table-section'>
+                        <table className="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>
                                         <input
                                             type="checkbox"
-                                            checked={selectedRows.includes(user.id)}
-                                            onChange={() => handleSelectRow(user.id)}
+                                            checked={selectAll}
+                                            onChange={handleSelectAll}
                                         />
-                                    </td>
-                                    <td>
-                                        {editMode === user.id ? (
-                                            <input
-                                                type="text"
-                                                value={user.name}
-                                                className='edit-input'
-                                                onChange={(e) =>
-                                                    handleRowDataChange(e, 'name', user.id)
-                                                }
-                                            />
-                                        ) : (
-                                            user.name
-                                        )}
-                                    </td>
-                                    <td>
-                                        {editMode === user.id ? (
-                                            <input
-                                                type="text"
-                                                value={user.email}
-                                                className='edit-input'
-                                                onChange={(e) =>
-                                                    handleRowDataChange(e, 'email', user.id)
-                                                }
-                                            />
-                                        ) : (
-                                            user.email
-                                        )}
-                                    </td>
-                                    <td>
-                                        {editMode === user.id ? (
-                                            <input
-                                                type="text"
-                                                value={user.role}
-                                                className='edit-input'
-                                                onChange={(e) =>
-                                                    handleRowDataChange(e, 'role', user.id)
-                                                }
-                                            />
-                                        ) : (
-                                            user.role
-                                        )}
-                                    </td>
-                                    <td>
-                                        {editMode === user.id ? (<button type="submit" className='submit-btn' onClick={() => toggleEditMode(user.id)}>submit</button>) : (
-                                            <div className='action-section'>
-                                                <DeleteOutlineOutlinedIcon
-                                                    color='error'
-                                                    className="delete-button"
-                                                    onClick={() => handleDelete(user.id)}
-                                                    sx={
-                                                        {
-                                                            width: "22px",
-                                                            height: "22px"
-                                                        }
-                                                    }
-                                                />
-
-                                                <EditRoundedIcon
-                                                    className="delete-button"
-                                                    onClick={() => toggleEditMode(user.id)}
-                                                    sx={
-                                                        {
-                                                            width: "22px",
-                                                            height: "22px"
-                                                        }
-                                                    }
-                                                />
-                                            </div>
-                                        )}
-                                    </td>
+                                    </th>
+                                    <th>
+                                        <Typography variant='title'>
+                                            Name
+                                        </Typography>
+                                    </th>
+                                    <th>
+                                        <Typography variant='title'>
+                                            Email
+                                        </Typography></th>
+                                    <th><Typography variant='title'>
+                                        Role
+                                    </Typography></th>
+                                    <th>
+                                        <Typography variant='title'>
+                                            Actions
+                                        </Typography></th>
                                 </tr>
-                            ))}
-                    </tbody>
-                </table>
+                            </thead>
+                            {/* Table body */}
+                            <tbody>
+                                {/* Render rows */}
+                                {filteredUsers
+                                    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                    .map((user) => (
+                                        <tr
+                                            className="table-row"
+                                            key={user.id}
+                                            style={{
+                                                backgroundColor: selectedRows.includes(user.id)
+                                                    ? 'gray'
+                                                    : '',
+                                            }}
+                                        >
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedRows.includes(user.id)}
+                                                    onChange={() => handleSelectRow(user.id)}
+                                                />
+                                            </td>
+                                            <td>
+                                                {editMode === user.id ? (
+                                                    <input
+                                                        type="text"
+                                                        value={editedRow.name}
+                                                        className='edit-input'
+                                                        onChange={(e) =>
+                                                            handleRowDataChange(e, 'name', user.id)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    user.name
+                                                )}
+                                            </td>
+                                            <td>
+                                                {editMode === user.id ? (
+                                                    <input
+                                                        type="text"
+                                                        value={editedRow.email}
+                                                        className='edit-input'
+                                                        onChange={(e) =>
+                                                            handleRowDataChange(e, 'email', user.id)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    user.email
+                                                )}
+                                            </td>
+                                            <td>
+                                                {editMode === user.id ? (
+                                                    <input
+                                                        type="text"
+                                                        value={editedRow.role}
+                                                        className='edit-input'
+                                                        onChange={(e) =>
+                                                            handleRowDataChange(e, 'role', user.id)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    user.role
+                                                )}
+                                            </td>
+                                            <td>
+                                                {editMode === user.id ? (<button type="submit" className='submit-btn' onClick={() => toggleSaveMode(user.id)}>submit</button>) : (
+                                                    <div className='action-section'>
+                                                        <DeleteOutlineOutlinedIcon
+                                                            color='error'
+                                                            className="delete-button"
+                                                            onClick={() => handleDelete(user.id)}
+                                                            sx={
+                                                                {
+                                                                    width: "22px",
+                                                                    height: "22px"
+                                                                }
+                                                            }
+                                                        />
+
+                                                        <EditRoundedIcon
+                                                            className="delete-button"
+                                                            onClick={() => toggleEditMode(user.id)}
+                                                            sx={
+                                                                {
+                                                                    width: "22px",
+                                                                    height: "22px"
+                                                                }
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div className="grid-item">{/* pagination-section */}
+                    {/* <div className='pagination-bar'> */}
+                        <PaginationBar handleDeleteSelected={handleDeleteSelected} filteredUsers={filteredUsers} setCurrentPage={setCurrentPage} selectedRows={selectedRows} selectAll={selectAll} currentPage={currentPage} />
+                    {/* </div> */}
+                </div>
+
             </div>
 
-            {/* pagination-section */}
-            <div className='pagination-bar'>
-                <PaginationBar handleDeleteSelected={handleDeleteSelected} filteredUsers={filteredUsers} setCurrentPage={setCurrentPage} selectedRows={selectedRows} selectAll={selectAll} currentPage={currentPage} />
-            </div>
+
+
+
         </div>
     )
 }
