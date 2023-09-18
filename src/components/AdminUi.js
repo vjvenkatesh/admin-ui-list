@@ -78,10 +78,6 @@ function AdminUi() {
         setCurrentPage(1);
         
         setFilteredUsers(filteredData);
-
-        if(filteredData.length<1 && query != ""){
-            alert("No results found");
-        }
         
 
     };
