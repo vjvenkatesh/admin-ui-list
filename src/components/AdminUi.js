@@ -34,6 +34,8 @@ function AdminUi() {
 
     const [editedRow,setEditedRow] =useState({});
 
+    const [isSubmitDisabled,setIsSubmitDisabled]=useState(false);
+
     const itemsPerPage = 10;
 
     // <------ When Component Mounted this will call the fetchUsersFromApi function. -----> //
@@ -77,7 +79,7 @@ function AdminUi() {
         );
         setCurrentPage(1);
         
-        setFilteredUsers(filteredData);
+        setFilteredUsers(filteredData);        
 
     };
 
@@ -215,9 +217,15 @@ function AdminUi() {
 
     // Handle row data change when in edit mode
     const handleRowDataChange = (event, field, userId) => {
+        console.log(event.target.value);
+        if (event.target.value === '') {
+        setIsSubmitDisabled(true);
+        }
+        else{
+            setIsSubmitDisabled(false);
+        }
         const updatedRow = { ...editedRow, [field]: event.target.value };
         setEditedRow(updatedRow);
-        console.log("indisw")
     };
 
 
@@ -225,7 +233,6 @@ function AdminUi() {
 
     const toggleSaveMode=(userId)=>{
         setEditMode(editMode === userId ? null : userId);
-        // setUsers(...users, editedRow);
         const updatedData = users.map((user) => {
             if (user.id === editedRow.id) {
               return editedRow;
@@ -233,7 +240,6 @@ function AdminUi() {
             return user;
           });
           
-          console.log(updatedData);
           setUsers(updatedData);
           setSearchText("");
     }
@@ -368,7 +374,7 @@ function AdminUi() {
                                                 )}
                                             </td>
                                             <td>
-                                                {editMode === user.id ? (<button type="submit" className='submit-btn' onClick={() => toggleSaveMode(user.id)}>submit</button>) : (
+                                                {editMode === user.id ? (<button type="submit" className='submit-btn' disabled={isSubmitDisabled} onClick={() => toggleSaveMode(user.id)}>submit</button>) : (
                                                     <div className='action-section'>
                                                         <DeleteOutlineOutlinedIcon
                                                             color='error'

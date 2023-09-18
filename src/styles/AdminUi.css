@@ -66,6 +66,12 @@ thead {
 }
 
 
+.submit-btn:disabled{
+  background-color: #cccccc;
+  color: black;
+}
+
+
 
 /* action-section delete-button */
 .delete-button:hover {
