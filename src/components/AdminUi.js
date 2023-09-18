@@ -277,8 +277,9 @@ function AdminUi() {
                         <SearchBar setSearchText={setSearchText} searchText={searchText} />
                     </div>
                 </div>
-                <div className="grid-item"> {/* table-section */}
-                    <div className='table-section'>
+                <div className="grid-item"> 
+                {/* table-section */}
+                   {filteredUsers.length<1?(<h4>No results found!</h4>):(<div className='table-section'>
                         <table className="custom-table">
                             <thead>
                                 <tr>
@@ -376,6 +377,7 @@ function AdminUi() {
                                                     <div className='action-section'>
                                                         <DeleteOutlineOutlinedIcon
                                                             color='error'
+                                                            fontSize='large'
                                                             className="delete-button"
                                                             onClick={() => handleDelete(user.id)}
                                                             sx={
@@ -388,6 +390,7 @@ function AdminUi() {
 
                                                         <EditRoundedIcon
                                                             className="delete-button"
+                                                            fontSize='large'
                                                             onClick={() => toggleEditMode(user.id)}
                                                             sx={
                                                                 {
@@ -404,12 +407,12 @@ function AdminUi() {
                             </tbody>
                         </table>
                     </div>
+                )} 
                 </div>
-
-                <div className="grid-item">{/* pagination-section */}
-                    {/* <div className='pagination-bar'> */}
+                <div className="grid-item">
+                    <div className='pagination-bar'>
                         <PaginationBar handleDeleteSelected={handleDeleteSelected} filteredUsers={filteredUsers} setCurrentPage={setCurrentPage} selectedRows={selectedRows} selectAll={selectAll} currentPage={currentPage} />
-                    {/* </div> */}
+                    </div>
                 </div>
 
             </div>
