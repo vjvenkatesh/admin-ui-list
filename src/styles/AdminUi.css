@@ -109,4 +109,8 @@ thead {
  .pagination-bar{
   width: 100%;
 }
+
+.submit-btn {
+  width: 100%;
+}
 }
