@@ -101,6 +101,7 @@ thead {
   }
   .edit-input {
     width: 90%;
+    padding: 2px;
   }
  .pagination-bar{
   width: 100%;
