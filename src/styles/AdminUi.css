@@ -94,6 +94,9 @@ thead {
     margin:10px 0px;
     width: 100%;
   }
+  .action-section {
+    width: 100%;
+  }
 
   .table-section{
     width: 100%;
