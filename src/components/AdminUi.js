@@ -290,7 +290,7 @@ function AdminUi() {
                                             onChange={handleSelectAll}
                                         />
                                     </th>
-                                    <th>
+                                    <th className='th-name'>
                                         <Typography variant='title'>
                                             Name
                                         </Typography>

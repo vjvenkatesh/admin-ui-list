@@ -114,4 +114,7 @@ thead {
   width: 100%;
   height: 2.1rem;
 }
+.th-name{
+  min-width: 11rem;
+}
 }
