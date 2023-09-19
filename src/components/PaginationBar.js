@@ -5,10 +5,10 @@ import '../styles/PaginationBar.css';
 function PaginationBar({ handleDeleteSelected, filteredUsers, setCurrentPage, currentPage, selectedRows, selectAll }) {
 
 
-    const firstPageLabel = '|<';
+    const firstPageLabel = '<<';
     const prevPageLabel = '<';
     const nextPageLabel = '>';
-    const lastPageLabel = '>|';
+    const lastPageLabel = '>>';
 
     const handlePageChange = (value) => {
         setCurrentPage(value);

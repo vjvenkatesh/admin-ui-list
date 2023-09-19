@@ -32,9 +32,9 @@ function AdminUi() {
     const [selectAll, setSelectAll] = useState(false);
 
 
-    const [editedRow,setEditedRow] =useState({});
+    const [editedRow, setEditedRow] = useState({});
 
-    const [isSubmitDisabled,setIsSubmitDisabled]=useState(false);
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 
     const itemsPerPage = 10;
 
@@ -78,8 +78,8 @@ function AdminUi() {
                 user.role.toLowerCase().includes(query.toLowerCase())
         );
         setCurrentPage(1);
-        
-        setFilteredUsers(filteredData);        
+
+        setFilteredUsers(filteredData);
 
     };
 
@@ -181,10 +181,10 @@ function AdminUi() {
         setSelectAll(false);
 
 
-        if (currentPage === totalPages && totalPages!= 1 ) {
-            setCurrentPage(currentPage-1);
+        if (currentPage === totalPages && totalPages != 1) {
+            setCurrentPage(currentPage - 1);
         }
-        
+
 
 
         // Update the 'users' and 'filteredUsers' states with the filtered lists
@@ -197,15 +197,15 @@ function AdminUi() {
 
 
 
-    
+
 
 
 
     // Handle row edit mode toggle
     const toggleEditMode = (userId) => {
         setEditMode(editMode === userId ? null : userId);
-        const editingUser=users.filter((user)=>{
-            if(user.id == userId){
+        const editingUser = users.filter((user) => {
+            if (user.id == userId) {
                 return user;
             }
         })
@@ -217,10 +217,10 @@ function AdminUi() {
 
     // Handle row data change when in edit mode
     const handleRowDataChange = (event, field, userId) => {
-        if (event.target.value == "" || editedRow.name == "" || editedRow.email== "" || editedRow.role =="") {
-        setIsSubmitDisabled(true);
+        if (event.target.value == "" || editedRow.name == "" || editedRow.email == "" || editedRow.role == "") {
+            setIsSubmitDisabled(true);
         }
-        else{
+        else {
             setIsSubmitDisabled(false);
         }
         const updatedRow = { ...editedRow, [field]: event.target.value };
@@ -230,21 +230,21 @@ function AdminUi() {
 
 
 
-    const toggleSaveMode=(userId)=>{
+    const toggleSaveMode = (userId) => {
         setEditMode(editMode === userId ? null : userId);
         const updatedData = users.map((user) => {
             if (user.id === editedRow.id) {
-              return editedRow;
+                return editedRow;
             }
             return user;
-          });
-          
-          setUsers(updatedData);
-          setSearchText("");
+        });
+
+        setUsers(updatedData);
+        setSearchText("");
     }
 
 
-    
+
 
 
 
@@ -270,17 +270,17 @@ function AdminUi() {
 
     return (
         <div className='admin-table'>
-            <div className="grid-container">
-                <div className="grid-item">
-                    {/* search-section */}
-                    <div className='search-bar'>
-                        <SearchBar setSearchText={setSearchText} searchText={searchText} />
-                    </div>
-                </div>
-                <div className="grid-item"> 
-                {/* table-section */}
-                   {filteredUsers.length<1?(<h4>No results found!</h4>):(<div className='table-section'>
-                        <table className="custom-table">
+
+            {/* search-section               className='search-bar'*/}
+            <div className='search-bar'>
+                <SearchBar setSearchText={setSearchText} searchText={searchText} />
+            </div>
+
+            {/* table-section */}
+            {filteredUsers.length < 1 ? (<h4>No results found!</h4>) :
+                (
+                    <div className='table-section'>
+                        <table className="custom-table" >     
                             <thead>
                                 <tr>
                                     <th>
@@ -407,21 +407,15 @@ function AdminUi() {
                             </tbody>
                         </table>
                     </div>
-                )} 
-                </div>
-                <div className="grid-item">
-                    <div className='pagination-bar'>
-                        <PaginationBar handleDeleteSelected={handleDeleteSelected} filteredUsers={filteredUsers} setCurrentPage={setCurrentPage} selectedRows={selectedRows} selectAll={selectAll} currentPage={currentPage} />
-                    </div>
-                </div>
 
+
+                )}
+            <div className='pagination-bar' >   
+                <PaginationBar handleDeleteSelected={handleDeleteSelected} filteredUsers={filteredUsers} setCurrentPage={setCurrentPage} selectedRows={selectedRows} selectAll={selectAll} currentPage={currentPage} />
             </div>
-
-
-
-
         </div>
+
     )
 }
 
-export default AdminUi
+export default AdminUi;
