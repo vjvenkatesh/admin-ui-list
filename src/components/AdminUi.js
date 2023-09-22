@@ -44,7 +44,6 @@ function AdminUi() {
     }, []);
 
 
-
     // <------ When Component Mounted this will call and when users and searchText data change will call the filterUsers fn with searchText.  -----> //
     useEffect(() => {
         filterUsers(searchText)
@@ -130,8 +129,7 @@ function AdminUi() {
             setUsers(data);
 
         } catch (error) {
-            alert("Error on fetching data from the backend ! check whether backend server is running or not!....")
-            console.error('Error fetching user data:', error);
+            alert("Error on fetching data from the backend ! check whether backend server is running or not!....");
         }
     };
 

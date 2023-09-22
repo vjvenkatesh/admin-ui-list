@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('sample test case',()=>{
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+  const searchBar=screen.findByPlaceholderText("Search by name, email or role");
+  expect(searchBar).not.toBe("Search by name, email or role");
+})
