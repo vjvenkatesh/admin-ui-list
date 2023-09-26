@@ -38,6 +38,7 @@ function AdminUi() {
 
     const itemsPerPage = 10;
 
+
     // <------ When Component Mounted this will call the fetchUsersFromApi function. -----> //
     useEffect(() => {
         fetchUsersFromAPI();
@@ -282,25 +283,28 @@ function AdminUi() {
                             <thead>
                                 <tr>
                                     <th>
+                                        <label className='th-select-all'>
                                         <input
                                             type="checkbox"
                                             checked={selectAll}
                                             onChange={handleSelectAll}
                                         />
+                                        Select All
+                                        </label>
                                     </th>
                                     <th className='th-name'>
                                         <Typography variant='title'>
                                             Name
                                         </Typography>
                                     </th>
-                                    <th>
+                                    <th className='th-email'>
                                         <Typography variant='title'>
                                             Email
                                         </Typography></th>
-                                    <th><Typography variant='title'>
+                                    <th className='th-role'><Typography variant='title'>
                                         Role
                                     </Typography></th>
-                                    <th>
+                                    <th className='th-actions'>
                                         <Typography variant='title'>
                                             Actions
                                         </Typography></th>
@@ -312,7 +316,7 @@ function AdminUi() {
                                 {filteredUsers
                                     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
                                     .map((user) => (
-                                        <tr
+                                        <tr 
                                             className="table-row"
                                             key={user.id}
                                             style={{
@@ -328,7 +332,7 @@ function AdminUi() {
                                                     onChange={() => handleSelectRow(user.id)}
                                                 />
                                             </td>
-                                            <td>
+                                            <td data-label="Name">
                                                 {editMode === user.id ? (
                                                     <input
                                                         type="text"
@@ -342,7 +346,7 @@ function AdminUi() {
                                                     user.name
                                                 )}
                                             </td>
-                                            <td>
+                                            <td data-label="Email">
                                                 {editMode === user.id ? (
                                                     <input
                                                         type="text"
@@ -356,7 +360,7 @@ function AdminUi() {
                                                     user.email
                                                 )}
                                             </td>
-                                            <td>
+                                            <td data-label="Role">
                                                 {editMode === user.id ? (
                                                     <input
                                                         type="text"
@@ -370,7 +374,7 @@ function AdminUi() {
                                                     user.role
                                                 )}
                                             </td>
-                                            <td>
+                                            <td data-label="Actions">
                                                 {editMode === user.id ? (<button type="submit" className='submit-btn' disabled={isSubmitDisabled} onClick={() => toggleSaveMode(user.id)}>submit</button>) : (
                                                     <div className='action-section'>
                                                         <DeleteOutlineOutlinedIcon

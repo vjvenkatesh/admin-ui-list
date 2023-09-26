@@ -8,12 +8,10 @@
 
 .table-section{
   width: 100%;
-  /* background-color: aqua; */
 }
 
 .custom-table{
   width: 100%;
-  overflow-x: auto;
 }
 
 thead {
@@ -84,7 +82,12 @@ thead {
   margin-top: 10px;
 }
 
-
+.th-select-all{
+  display: flex;
+  /* background-color: aqua; */
+  justify-content: space-between;
+  width: 60%;
+}
 
 @media screen and (max-width:760px) {
   .admin-table{
@@ -95,15 +98,18 @@ thead {
     width: 100%;
   }
   .action-section {
-    width: 100%;
+    margin-left: 50%;
+    width: 50%;
+    
+    align-items: flex-end;
+    justify-content: space-evenly;
   }
 
   .table-section{
-    width: 100%;
-   overflow-x: auto;
+    width: 99%;
   }
   .edit-input {
-    width: 100%;
+    width: 60%;
     padding: 2px;
   }
  .pagination-bar{
@@ -111,10 +117,52 @@ thead {
 }
 
 .submit-btn {
-  width: 100%;
+  width: 62%;
   height: 2rem;
 }
-.th-name{
-  min-width: 11rem;
+
+
+
+
+
+
+
+/* after the table mobile responsive*/
+.custom-table , .th-name , .th-email, .th-role, .th-actions{
+  display: none;
+  
 }
+
+.custom-table, .custom-table tbody, .custom-table tr, .custom-table td{
+  display: block;
+  width: 100%;
+}
+
+.custom-table tr{
+  margin-bottom: 15px;
+}
+
+
+.custom-table td{
+  text-align: right;
+  position: relative;
+  
+}
+.custom-table td::before{
+  content: attr(data-label);
+  position: absolute;
+  left: 0;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: left;
+}
+
+thead{
+  background-color: white;
+}
+
+.th-select-all{
+  width: 110%;
+}
+
 }
